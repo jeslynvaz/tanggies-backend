@@ -13,4 +13,5 @@ public class CreateProductRequest {
     String ingredients;
     long price;
     String description;
+    long categoryId;
 }
