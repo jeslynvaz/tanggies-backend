@@ -1,9 +1,8 @@
-package com.tanggiesbackend.serviceimpl;
+package com.tanggiesbackend.serviceImpl;
 
 import com.tanggiesbackend.dto.CreateProductRequest;
-import com.tanggiesbackend.entities.Category;
 import com.tanggiesbackend.entities.Products;
-import com.tanggiesbackend.repositories.ProdcutsRepository;
+import com.tanggiesbackend.repositories.ProductsRepository;
 import com.tanggiesbackend.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,41 +13,59 @@ import java.util.List;
 public class ProductServiceImpl  implements ProductsService {
 
     @Autowired
-    ProdcutsRepository prodcutsRepository;
+    ProductsRepository productsRepository;
 
     @Override
     public String create(CreateProductRequest request) {
-        Products products = Products
+
+        Products products =  Products
                 .builder()
-                .name(request.getName())
-                .ingredients(request.getIngredients())
-                .description(request.getDescription())
-                .price(request.getPrice())
                 .categoryId(request.getCategoryId())
+                .name(request.getName())
+                .price(request.getPrice())
+                .description(request.getDescription())
+                .ingredients(request.getIngredients())
                 .build();
 
-        prodcutsRepository.save(products);
+        productsRepository.save(products);
 
-        return null;
+        return "Product created successfully";
     }
 
     @Override
     public String update(CreateProductRequest request) {
-        return null;
+
+        Products existingProduct = productsRepository.findById(request.getId());
+
+        Products updatedProduct =  Products
+                .builder()
+                .categoryId(request.getCategoryId())
+                .name(request.getName())
+                .price(request.getPrice())
+                .description(request.getDescription())
+                .ingredients(request.getIngredients())
+                .build();
+
+        productsRepository.save(updatedProduct);
+
+        return "Product updated successfully";
     }
 
     @Override
     public String delete(long id) {
-        return null;
+
+        productsRepository.deleteById(id);
+
+        return "Product deleted successfully";
     }
 
     @Override
     public Products get(long id) {
-        return null;
+        return productsRepository.findById(id);
     }
 
     @Override
     public List<Products> getAll() {
-        return null;
+        return productsRepository.findAll();
     }
 }
